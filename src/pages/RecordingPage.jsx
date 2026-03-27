@@ -589,7 +589,7 @@ function PlayerModal({ rec, lang, t, open, onClose }) {
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{rec.staff}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{rec.counter}</span>
             <span style={{ fontSize: 13, color: C.textMuted }}>{rec.datetime}</span>
             <PriorityCell level={priority} />
           </div>
@@ -895,7 +895,7 @@ function PlayerModal({ rec, lang, t, open, onClose }) {
             }}
           >
             {[
-              { label: t('th_counter'),   value: rec.staff },
+              { label: t('th_counter'),   value: rec.counter },
               { label: t('th_store_mic'), value: `${rec.store} / ${rec.mic}` },
               { label: t('th_start'),     value: rec.datetime },
               { label: t('th_dur'),       value: rec.dur },
@@ -1667,7 +1667,7 @@ export default function RecordingPage() {
       key: 'counter',
       width: 140,
       render: (_, rec) => (
-        <div style={{ fontSize: 14, fontWeight: 500, color: C.text }}>{rec.staff}</div>
+        <div style={{ fontSize: 14, fontWeight: 500, color: C.text }}>{rec.counter}</div>
       ),
     },
     {
