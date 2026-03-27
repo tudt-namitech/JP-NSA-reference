@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import { I } from '../data/i18n.js';
-import { ROLES } from '../data/constants.js';
+import { ROLES, STORE_LIST, MULTI_STORE } from '../data/constants.js';
 
 export const AppContext = createContext(null);
 
@@ -21,13 +21,21 @@ export function AppProvider({ children }) {
     [lang]
   );
 
+  const allStoreIds = STORE_LIST.map((s) => s.id);
+
   const setCurRole = useCallback(
     (newRole) => {
       setCurRoleRaw(newRole);
       const pages = ROLES[newRole]?.pages ?? [];
       setCurPage((prev) => (pages.includes(prev) ? prev : pages[0] ?? prev));
+      // admin & operator default to all stores; others get first store
+      if (MULTI_STORE.includes(newRole) && ['admin', 'operator'].includes(newRole)) {
+        setCurStore(allStoreIds);
+      } else {
+        setCurStore([allStoreIds[0]]);
+      }
     },
-    []
+    [allStoreIds]
   );
 
   const value = {

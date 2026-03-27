@@ -1,9 +1,18 @@
 import { Button, Badge, Tooltip, Space, Typography } from 'antd';
 import {
-  BellOutlined,
   ExportOutlined,
   InfoCircleOutlined,
 } from '@ant-design/icons';
+
+function FlatBellIcon({ size = 16, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    </svg>
+  );
+}
 import { useApp } from '../contexts/AppContext';
 import { ROLES, PAGE_KEY } from '../data/constants.js';
 
@@ -45,7 +54,7 @@ export default function TopBar({ onBellClick, alertCount = 0 }) {
       }}
     >
       {/* ── Left: page title + subtitle ── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
         <div style={{ minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <Title
@@ -73,7 +82,7 @@ export default function TopBar({ onBellClick, alertCount = 0 }) {
             >
               <InfoCircleOutlined
                 style={{
-                  fontSize: 13,
+                  fontSize: 15,
                   color: '#94a3b8',
                   cursor: 'help',
                   flexShrink: 0,
@@ -85,7 +94,7 @@ export default function TopBar({ onBellClick, alertCount = 0 }) {
           {pageDesc && (
             <Text
               style={{
-                fontSize: 11,
+                fontSize: 13,
                 color: C.textSub,
                 display: 'block',
                 whiteSpace: 'nowrap',
@@ -128,7 +137,7 @@ export default function TopBar({ onBellClick, alertCount = 0 }) {
           />
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: 600,
               color: roleColor,
               whiteSpace: 'nowrap',
@@ -143,11 +152,11 @@ export default function TopBar({ onBellClick, alertCount = 0 }) {
           count={alertCount}
           size="small"
           offset={[-2, 2]}
-          styles={{ indicator: { fontSize: 10, minWidth: 16, height: 16, lineHeight: '16px' } }}
+          styles={{ indicator: { fontSize: 12, minWidth: 16, height: 16, lineHeight: '16px' } }}
         >
           <Button
             shape="circle"
-            icon={<BellOutlined style={{ fontSize: 16 }} />}
+            icon={<FlatBellIcon size={16} color={alertCount > 0 ? '#2563eb' : '#64748b'} />}
             onClick={onBellClick}
             style={{
               border: '1px solid #e2e8f0',
@@ -166,7 +175,7 @@ export default function TopBar({ onBellClick, alertCount = 0 }) {
         <Button
           icon={<ExportOutlined />}
           style={{
-            fontSize: 13,
+            fontSize: 15,
             fontWeight: 500,
             borderRadius: 8,
             height: 34,

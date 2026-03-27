@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite:*)",
+      "Bash(sed -i '' 's/fontSize: 13,/fontSize: 15,/g' src/pages/RecordingPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 12,/fontSize: 14,/g' src/pages/RecordingPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 11,/fontSize: 13,/g' src/pages/RecordingPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 10,/fontSize: 12,/g' src/pages/RecordingPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 13,/fontSize: 15,/g' src/pages/MicSystemPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 12,/fontSize: 14,/g' src/pages/MicSystemPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 11,/fontSize: 13,/g' src/pages/MicSystemPage.jsx)",
+      "Bash(sed -i '' 's/fontSize: 10,/fontSize: 12,/g' src/pages/MicSystemPage.jsx)"
+    ]
+  }
+}

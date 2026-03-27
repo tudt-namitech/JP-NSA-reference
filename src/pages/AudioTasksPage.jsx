@@ -162,7 +162,7 @@ function AsDictionaryTab({ t }) {
           </tbody>
         </table>
 
-        <div style={{ padding: '12px 14px' }}>
+        <div style={{ padding: '14px 16px' }}>
           <Button
             icon={<PlusOutlined />}
             onClick={addRow}

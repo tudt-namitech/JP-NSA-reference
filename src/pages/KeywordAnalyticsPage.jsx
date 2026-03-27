@@ -45,28 +45,27 @@ const BY_STORE_DATA = [
 
 /* ─── trend sparkbar component ──────────────────────────────── */
 const TREND_DATA = {
-  '血圧':        [60, 72, 68, 80, 75, 88, 100],
-  '糖尿病':      [55, 60, 70, 65, 72, 80, 100],
-  '風邪薬':      [40, 50, 80, 95, 70, 60, 100],
-  'インフルエンザ': [20, 30, 70, 100, 85, 50, 30],
-  '花粉症':      [10, 20, 60, 100, 90, 70, 40],
-  'ビタミン':    [50, 55, 60, 65, 70, 80, 100],
+  '血圧':        [30, 42, 50, 55, 60, 58, 65, 68, 72, 80, 75, 88, 100],
+  '糖尿病':      [25, 35, 40, 50, 55, 60, 70, 65, 72, 68, 75, 80, 100],
+  '風邪薬':      [20, 28, 35, 40, 50, 80, 95, 70, 60, 55, 65, 78, 100],
+  'インフルエンザ': [10, 15, 20, 30, 70, 100, 85, 50, 30, 25, 35, 45, 30],
+  '花粉症':      [5, 8, 10, 20, 60, 100, 90, 70, 40, 55, 65, 50, 40],
+  'ビタミン':    [35, 40, 45, 50, 55, 60, 65, 58, 62, 70, 75, 80, 100],
 };
 
 function SparkBar({ kw }) {
-  const vals = TREND_DATA[kw] ?? [50, 60, 70, 80, 90, 95, 100];
+  const vals = TREND_DATA[kw] ?? [30, 40, 50, 55, 60, 70, 75, 80, 85, 88, 90, 95, 100];
   const max = Math.max(...vals);
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 24 }}>
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 1.5, height: 28, minWidth: 80 }}>
       {vals.map((v, i) => (
         <div
           key={i}
           style={{
-            width: 5,
-            height: `${(v / max) * 100}%`,
+            flex: 1,
+            height: `${Math.max((v / max) * 100, 8)}%`,
             background: i === vals.length - 1 ? C.blue : '#bfdbfe',
-            borderRadius: 1,
-            minHeight: 2,
+            borderRadius: 2,
           }}
         />
       ))}
@@ -85,17 +84,17 @@ function KpiCard({ label, value, sub, accentColor, icon }) {
         boxShadow: '0 1px 4px rgba(0,0,0,.07)',
         height: '100%',
       }}
-      styles={{ body: { padding: '16px 20px' } }}
+      styles={{ body: { padding: '18px 24px' } }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 6, fontWeight: 500 }}>
+          <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 6, fontWeight: 500 }}>
             {label}
           </div>
           <div style={{ fontSize: 26, fontWeight: 700, color: C.text, lineHeight: 1.1 }}>
             {value}
           </div>
-          <div style={{ fontSize: 12, color: C.textLight, marginTop: 6 }}>{sub}</div>
+          <div style={{ fontSize: 14, color: C.textLight, marginTop: 6 }}>{sub}</div>
         </div>
         <div
           style={{
@@ -120,7 +119,6 @@ function KpiCard({ label, value, sub, accentColor, icon }) {
 /* ─── main component ─────────────────────────────────────────── */
 export default function KeywordAnalyticsPage() {
   const { t } = useApp();
-  const [selectedStore, setSelectedStore] = useState(null);
   const [selectedKw, setSelectedKw] = useState(null);
 
   /* ── KW analytics table columns ── */
@@ -137,7 +135,7 @@ export default function KeywordAnalyticsPage() {
             border: '1px solid #bfdbfe',
             borderRadius: 4,
             fontWeight: 600,
-            fontSize: 13,
+            fontSize: 15,
           }}
         >
           {kw}
@@ -180,7 +178,7 @@ export default function KeywordAnalyticsPage() {
               }}
             />
           </div>
-          <Text style={{ color: C.textMuted, fontSize: 12, minWidth: 30 }}>{pct}%</Text>
+          <Text style={{ color: C.textMuted, fontSize: 14, minWidth: 30 }}>{pct}%</Text>
         </div>
       ),
     },
@@ -208,7 +206,7 @@ export default function KeywordAnalyticsPage() {
     },
     ...KEYWORDS.map((kw) => ({
       title: (
-        <span style={{ color: C.blue, fontSize: 12, fontWeight: 600 }}>{kw}</span>
+        <span style={{ color: C.blue, fontSize: 14, fontWeight: 600 }}>{kw}</span>
       ),
       dataIndex: kw,
       key: kw,
@@ -223,7 +221,7 @@ export default function KeywordAnalyticsPage() {
               border: `1px solid ${val > 1500 ? '#bfdbfe' : val > 800 ? '#a7f3d0' : '#e2e8f0'}`,
               borderRadius: 4,
               fontWeight: 600,
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             {val.toLocaleString()}
@@ -234,7 +232,6 @@ export default function KeywordAnalyticsPage() {
     })),
   ];
 
-  const storeOptions = STORE_LIST.map((s) => ({ value: s.id, label: s.name }));
   const kwOptions = KEYWORDS.map((kw) => ({ value: kw, label: kw }));
 
   return (
@@ -288,24 +285,11 @@ export default function KeywordAnalyticsPage() {
           marginBottom: 20,
           border: `1px solid ${C.border}`,
         }}
-        styles={{ body: { padding: '16px 20px' } }}
+        styles={{ body: { padding: '18px 24px' } }}
       >
         <Space wrap size={12} align="center">
           <div>
-            <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 4, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {t('fl_store')}
-            </div>
-            <Select
-              placeholder={t('sel_store')}
-              options={storeOptions}
-              value={selectedStore}
-              onChange={setSelectedStore}
-              allowClear
-              style={{ width: 180 }}
-            />
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 4, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 4, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               {t('fl_kw')}
             </div>
             <Select
@@ -318,7 +302,7 @@ export default function KeywordAnalyticsPage() {
             />
           </div>
           <div>
-            <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 4, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 4, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               {t('fl_from')} – {t('fl_to')}
             </div>
             <RangePicker style={{ width: 240 }} />
@@ -360,7 +344,7 @@ export default function KeywordAnalyticsPage() {
               gap: 12,
             }}
           >
-            <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               {t('kw_sum_lbl')}
             </div>
             <div
@@ -380,8 +364,8 @@ export default function KeywordAnalyticsPage() {
                 background: `${C.blue}40`,
                 border: `1px solid ${C.blue}80`,
                 borderRadius: 6,
-                padding: '4px 12px',
-                fontSize: 12,
+                padding: '6px 14px',
+                fontSize: 14,
                 color: '#93c5fd',
                 fontWeight: 500,
                 marginTop: 4,
@@ -399,16 +383,16 @@ export default function KeywordAnalyticsPage() {
                 textAlign: 'center',
               }}
             >
-              <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 11, marginBottom: 4 }}>
+              <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, marginBottom: 4 }}>
                 {t('kl1')}
               </div>
-              <div style={{ color: '#4ade80', fontSize: 13, fontWeight: 600 }}>{t('ks1')}</div>
+              <div style={{ color: '#4ade80', fontSize: 15, fontWeight: 600 }}>{t('ks1')}</div>
             </div>
           </Col>
 
           {/* Right: keyword analytics table */}
           <Col xs={24} md={17} style={{ padding: '20px 20px' }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 12 }}>
+            <div style={{ fontSize: 15, fontWeight: 600, color: C.textMuted, marginBottom: 12 }}>
               {t('fl_kw')} · Top {KW_ANALYTICS_DATA.length}
             </div>
             <Table

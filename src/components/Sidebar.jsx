@@ -1,8 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Dropdown, Tooltip } from 'antd';
 import {
-  PushpinOutlined,
-  PushpinFilled,
   CaretDownOutlined,
   CheckOutlined,
   ShopOutlined,
@@ -14,6 +12,16 @@ import {
   ToolOutlined,
 } from '@ant-design/icons';
 
+
+function SidebarToggleIcon({ size = 16, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+      <rect x="1" y="1" width="14" height="14" rx="2" stroke={color} strokeWidth="1.5" />
+      <path d="M5.5 1v14" stroke={color} strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 const NAV_ICONS = {
   play:  PlayCircleOutlined,
   chart: BarChartOutlined,
@@ -22,6 +30,7 @@ const NAV_ICONS = {
   users: TeamOutlined,
   audio: ToolOutlined,
 };
+
 import { useApp } from '../contexts/AppContext';
 import { NAV_ITEMS, ROLES, STORE_LIST, MULTI_STORE } from '../data/constants.js';
 
@@ -95,10 +104,7 @@ export default function Sidebar() {
     t,
   } = useApp();
 
-  const [hovered, setHovered] = useState(false);
-  const timerRef = useRef(null);
-
-  const expanded = pinned || hovered;
+  const expanded = pinned;
   const width    = expanded ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED;
 
   const role      = ROLES[curRole];
@@ -117,23 +123,14 @@ export default function Sidebar() {
     });
   }
 
-  /* ── hover with small delay so it doesn't flicker on fast passes ── */
-  function handleMouseEnter() {
-    clearTimeout(timerRef.current);
-    setHovered(true);
-  }
-  function handleMouseLeave() {
-    timerRef.current = setTimeout(() => setHovered(false), 120);
-  }
-
   /* ── role dropdown items ── */
   const roleMenuItems = Object.entries(ROLES).map(([key, val]) => ({
     key,
     label: (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '2px 0', minWidth: 180 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '2px 0', minWidth: 180 }}>
         {dot(val.color)}
         <span style={{ flex: 1, fontSize: 13 }}>{t(`role_${key}`)}</span>
-        {curRole === key && <CheckOutlined style={{ fontSize: 11, color: '#2563eb' }} />}
+        {curRole === key && <CheckOutlined style={{ fontSize: 13, color: '#2563eb' }} />}
       </div>
     ),
     onClick: () => setCurRole(key),
@@ -143,12 +140,12 @@ export default function Sidebar() {
   const storeMenuItems = STORE_LIST.map((s) => ({
     key: s.id,
     label: (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 190 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 190 }}>
         <span
           style={{
             display: 'inline-block',
             width: 28,
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 700,
             color: s.color,
             flexShrink: 0,
@@ -157,7 +154,7 @@ export default function Sidebar() {
           {s.code}
         </span>
         <span style={{ flex: 1, fontSize: 12 }}>{s.name}</span>
-        {selectedIds.includes(s.id) && <CheckOutlined style={{ fontSize: 11, color: '#2563eb' }} />}
+        {selectedIds.includes(s.id) && <CheckOutlined style={{ fontSize: 13, color: '#2563eb' }} />}
       </div>
     ),
     onClick: () => toggleStore(s.id),
@@ -242,7 +239,7 @@ export default function Sidebar() {
           <>
             <span
               style={{
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: isActive ? 600 : 400,
                 flex: 1,
                 whiteSpace: 'nowrap',
@@ -271,7 +268,7 @@ export default function Sidebar() {
             )}
 
             {locked && (
-              <span style={{ fontSize: 11, color: C.textDisabled, flexShrink: 0 }}>🔒</span>
+              <span style={{ fontSize: 13, color: C.textDisabled, flexShrink: 0 }}>🔒</span>
             )}
           </>
         )}
@@ -303,8 +300,6 @@ export default function Sidebar() {
   /* ──────────────────────────────────────────────────────────── */
   return (
     <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       style={{
         width,
         minWidth: width,
@@ -320,63 +315,95 @@ export default function Sidebar() {
         zIndex: 100,
       }}
     >
-      {/* ── 1. Logo area ────────────────────────────────────── */}
+      {/* ── 1. Logo area + toggle ───────────────────────────── */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: 10,
-          padding: expanded ? '16px 14px 12px' : '16px 0 12px',
+          padding: expanded ? '14px 12px 12px' : '14px 0 12px',
           justifyContent: expanded ? 'flex-start' : 'center',
           borderBottom: `1px solid ${C.border}`,
           flexShrink: 0,
+          position: 'relative',
         }}
       >
-        {/* Blue square "NS" logo */}
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 8,
-            background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            fontSize: 12,
-            fontWeight: 800,
-            color: '#fff',
-            letterSpacing: '-0.5px',
-            boxShadow: '0 2px 8px rgba(37,99,235,0.5)',
-          }}
-        >
-          NS
-        </div>
-
-        {expanded && (
-          <div style={{ overflow: 'hidden' }}>
+        {expanded ? (
+          <>
+            {/* Logo */}
             <div
               style={{
+                width: 30,
+                height: 30,
+                borderRadius: 7,
+                background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
                 fontSize: 13,
-                fontWeight: 700,
-                color: C.text,
-                whiteSpace: 'nowrap',
-                lineHeight: 1.2,
+                fontWeight: 800,
+                color: '#fff',
+                letterSpacing: '-0.5px',
               }}
             >
-              NamiSense Anywhere
+              NS
             </div>
-            <div
+            <div style={{ overflow: 'hidden', flex: 1 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: C.text, whiteSpace: 'normal', lineHeight: 1.3 }}>
+                NamiSense Anywhere
+              </div>
+              <div style={{ fontSize: 12, color: C.textMuted, whiteSpace: 'nowrap', marginTop: 1 }}>
+                {t('sub')}
+              </div>
+            </div>
+            {/* Toggle button — collapse */}
+            <button
+              onClick={() => setPinned(false)}
               style={{
-                fontSize: 10,
+                width: 28,
+                height: 28,
+                border: 'none',
+                background: 'transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 6,
                 color: C.textMuted,
-                whiteSpace: 'nowrap',
-                marginTop: 2,
+                flexShrink: 0,
+                transition: 'background 0.15s, color 0.15s',
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = C.bgHover; e.currentTarget.style.color = C.text; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.textMuted; }}
             >
-              {t('sub')}
-            </div>
-          </div>
+              <SidebarToggleIcon size={16} color="currentColor" />
+            </button>
+          </>
+        ) : (
+          /* Toggle button — expand */
+          <Tooltip title="Expand sidebar" placement="right" mouseEnterDelay={0.3}>
+            <button
+              onClick={() => setPinned(true)}
+              style={{
+                width: 32,
+                height: 32,
+                border: 'none',
+                background: 'transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 6,
+                color: C.textMuted,
+                transition: 'background 0.15s, color 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = C.bgHover; e.currentTarget.style.color = C.text; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.textMuted; }}
+            >
+              <SidebarToggleIcon size={16} color="currentColor" />
+            </button>
+          </Tooltip>
         )}
       </div>
 
@@ -409,7 +436,7 @@ export default function Sidebar() {
               <>
                 <span
                   style={{
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: 600,
                     color: C.text,
                     flex: 1,
@@ -420,7 +447,7 @@ export default function Sidebar() {
                 >
                   {roleName}
                 </span>
-                <CaretDownOutlined style={{ fontSize: 10, color: C.textMuted }} />
+                <CaretDownOutlined style={{ fontSize: 12, color: C.textMuted }} />
               </>
             )}
           </div>
@@ -428,6 +455,7 @@ export default function Sidebar() {
       </div>
 
       {/* ── 3. Store selector ───────────────────────────────── */}
+      {curRole !== 'account' && (
       <div style={{ padding: expanded ? '2px 10px 8px' : '2px 6px 8px', flexShrink: 0 }}>
         {isMulti ? (
           <Dropdown
@@ -459,7 +487,7 @@ export default function Sidebar() {
                       <span
                         key={s.id}
                         style={{
-                          fontSize: 10,
+                          fontSize: 12,
                           fontWeight: 700,
                           color: s.color,
                           background: 'rgba(255,255,255,0.07)',
@@ -472,15 +500,15 @@ export default function Sidebar() {
                       </span>
                     ))}
                     {selectedObjs.length > 2 && (
-                      <span style={{ fontSize: 10, color: C.textMuted }}>+{selectedObjs.length - 2}</span>
+                      <span style={{ fontSize: 12, color: C.textMuted }}>+{selectedObjs.length - 2}</span>
                     )}
                   </div>
-                  <CaretDownOutlined style={{ fontSize: 10, color: C.textMuted, flexShrink: 0 }} />
+                  <CaretDownOutlined style={{ fontSize: 12, color: C.textMuted, flexShrink: 0 }} />
                 </>
               ) : (
                 <span
                   style={{
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: 800,
                     color: storeObj.color,
                     minWidth: 24,
@@ -507,11 +535,11 @@ export default function Sidebar() {
               minHeight: 32,
             }}
           >
-            <ShopOutlined style={{ fontSize: 13, color: C.textMuted, flexShrink: 0 }} />
+            <ShopOutlined style={{ fontSize: 15, color: C.textMuted, flexShrink: 0 }} />
             {expanded && (
               <span
                 style={{
-                  fontSize: 11,
+                  fontSize: 13,
                   color: C.textMuted,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
@@ -524,6 +552,7 @@ export default function Sidebar() {
           </div>
         )}
       </div>
+      )}
 
       <div style={{ height: 1, background: C.border, margin: '0 10px 6px' }} />
 
@@ -538,56 +567,12 @@ export default function Sidebar() {
       {/* ── bottom section ──────────────────────────────────── */}
       <div style={{ borderTop: `1px solid ${C.border}`, flexShrink: 0 }}>
 
-        {/* ── 5. Pin button ───────────────────────────────────── */}
-        <div style={{ padding: expanded ? '8px 10px 4px' : '8px 6px 4px' }}>
-          <Tooltip title={!expanded ? t('pin_lbl') : ''} placement="right">
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: expanded ? '5px 8px' : '5px',
-                borderRadius: 8,
-                cursor: 'pointer',
-                background: pinned ? 'rgba(37,99,235,0.18)' : 'transparent',
-                transition: 'background 0.15s',
-                justifyContent: expanded ? 'flex-start' : 'center',
-                minHeight: 32,
-              }}
-              onClick={() => setPinned(!pinned)}
-              onMouseEnter={(e) => {
-                if (!pinned) e.currentTarget.style.background = C.bgHover;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = pinned ? 'rgba(37,99,235,0.18)' : 'transparent';
-              }}
-            >
-              {pinned ? (
-                <PushpinFilled style={{ fontSize: 14, color: '#2563eb', flexShrink: 0 }} />
-              ) : (
-                <PushpinOutlined style={{ fontSize: 14, color: C.textMuted, flexShrink: 0 }} />
-              )}
-              {expanded && (
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: pinned ? '#93c5fd' : C.textMuted,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {t('pin_lbl')}
-                </span>
-              )}
-            </div>
-          </Tooltip>
-        </div>
-
-        {/* ── 6. Language switcher ─────────────────────────── */}
+        {/* ── 5. Language switcher ─────────────────────────── */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 4,
+            gap: 6,
             padding: expanded ? '4px 10px' : '4px 6px',
             justifyContent: expanded ? 'flex-start' : 'center',
           }}
@@ -601,7 +586,7 @@ export default function Sidebar() {
                 borderRadius: 6,
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.04em',
                 background: lang === l ? '#2563eb' : C.pill,
@@ -630,7 +615,7 @@ export default function Sidebar() {
             <div style={{ overflow: 'hidden', flex: 1 }}>
               <div
                 style={{
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: 600,
                   color: C.text,
                   whiteSpace: 'nowrap',
@@ -643,7 +628,7 @@ export default function Sidebar() {
               </div>
               <div
                 style={{
-                  fontSize: 10,
+                  fontSize: 12,
                   color: C.textMuted,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',

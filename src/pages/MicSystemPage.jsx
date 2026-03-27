@@ -35,7 +35,7 @@ const TAG_STYLES = {
 function MicTag({ tag }) {
   const s = TAG_STYLES[tag] ?? { bg: '#f1f5f9', color: C.textMuted, border: C.border };
   return (
-    <Tag style={{ background: s.bg, color: s.color, border: `1px solid ${s.border}`, borderRadius: 4, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+    <Tag style={{ background: s.bg, color: s.color, border: `1px solid ${s.border}`, borderRadius: 4, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
       {tag}
     </Tag>
   );
@@ -46,7 +46,7 @@ function StatusDot({ online }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
       <span style={{ width: 8, height: 8, borderRadius: '50%', background: online ? C.green : '#cbd5e1', display: 'inline-block', boxShadow: online ? '0 0 0 2px #d1fae5' : 'none' }} />
-      <span style={{ fontSize: 12, color: online ? C.green : C.textLight, fontWeight: online ? 600 : 400 }}>
+      <span style={{ fontSize: 14, color: online ? C.green : C.textLight, fontWeight: online ? 600 : 400 }}>
         {online ? 'Online' : 'Offline'}
       </span>
     </div>
@@ -69,9 +69,9 @@ function SectionHeader({ title, count, desc, children }) {
       <div>
         <span style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{title}</span>
         {count != null && <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 4 }}>({count})</span>}
-        {desc && <div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{desc}</div>}
+        {desc && <div style={{ fontSize: 14, color: C.textMuted, marginTop: 2 }}>{desc}</div>}
       </div>
-      {children && <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>{children}</div>}
+      {children && <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>{children}</div>}
     </div>
   );
 }
@@ -105,12 +105,12 @@ function StatisticsTab() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>Statistics</div>
-          <div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>
+          <div style={{ fontSize: 14, color: C.textMuted, marginTop: 2 }}>
             Analyzing comprehensive system monitoring statistics to ensure optimal performance and operational stability.
           </div>
         </div>
         <div style={{ flexShrink: 0 }}>
-          <div style={{ fontSize: 12, color: C.textMuted, fontWeight: 600, marginBottom: 4 }}>Date Range</div>
+          <div style={{ fontSize: 14, color: C.textMuted, fontWeight: 600, marginBottom: 4 }}>Date Range</div>
           <RangePicker style={{ width: 280 }} />
         </div>
       </div>
@@ -124,7 +124,7 @@ function StatisticsTab() {
         {/* Y axis labels */}
         <div style={{ position: 'absolute', left: 0, top: 0, bottom: 28, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           {[10, 8, 6, 4, 2, 0].map((v) => (
-            <span key={v} style={{ fontSize: 10, color: C.textMuted, lineHeight: 1 }}>{v}</span>
+            <span key={v} style={{ fontSize: 12, color: C.textMuted, lineHeight: 1 }}>{v}</span>
           ))}
         </div>
 
@@ -181,7 +181,7 @@ function StatisticsTab() {
         ].map((l) => (
           <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <span style={{ width: 14, height: 14, borderRadius: '50%', background: l.color, display: 'inline-block' }} />
-            <span style={{ fontSize: 11, color: C.textMuted }}>{l.label}</span>
+            <span style={{ fontSize: 13, color: C.textMuted }}>{l.label}</span>
           </div>
         ))}
       </div>
@@ -193,13 +193,11 @@ function StatisticsTab() {
 function MicStatusTab({ t }) {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [storeFilter, setStoreFilter] = useState('all');
 
   const filtered = MICS_DATA.filter((m) => {
     if (search && !m.id.toLowerCase().includes(search.toLowerCase())) return false;
     if (statusFilter === 'on' && !m.on) return false;
     if (statusFilter === 'off' && m.on) return false;
-    if (storeFilter !== 'all' && m.store !== storeFilter) return false;
     return true;
   });
 
@@ -211,12 +209,12 @@ function MicStatusTab({ t }) {
       render: (id) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <DesktopOutlined style={{ color: C.textMuted, fontSize: 14 }} />
-          <code style={{ fontFamily: 'monospace', fontSize: 12, color: C.text }}>{id}</code>
+          <code style={{ fontFamily: 'monospace', fontSize: 14, color: C.text }}>{id}</code>
         </div>
       ),
     },
     { title: <span style={{ color: C.primary, fontWeight: 700 }}>Store</span>, dataIndex: 'store', key: 'store', render: (s) => <span style={{ fontSize: 13 }}>{s}</span> },
-    { title: <span style={{ color: C.primary, fontWeight: 700 }}>Ver</span>, dataIndex: 'ver', key: 'ver', render: (v) => <span style={{ fontSize: 12, color: C.textMuted }}>{v}</span> },
+    { title: <span style={{ color: C.primary, fontWeight: 700 }}>Ver</span>, dataIndex: 'ver', key: 'ver', render: (v) => <span style={{ fontSize: 14, color: C.textMuted }}>{v}</span> },
     {
       title: <span style={{ color: C.primary, fontWeight: 700 }}>Tags</span>,
       dataIndex: 'tags',
@@ -247,10 +245,6 @@ function MicStatusTab({ t }) {
           { value: 'on',  label: 'Online' },
           { value: 'off', label: 'Offline' },
         ]} />
-        <Select value={storeFilter} onChange={setStoreFilter} style={{ width: 180 }} options={[
-          { value: 'all', label: 'All Stores' },
-          ...STORE_LIST.map((s) => ({ value: s.name, label: s.name })),
-        ]} />
         <Button icon={<ReloadOutlined />} style={{ flexShrink: 0 }} />
       </div>
 
@@ -279,12 +273,10 @@ const SYNC_DATA = MICS_DATA.map((m, idx) => ({
 
 function SyncHistoryTab({ t }) {
   const [deviceName, setDeviceName] = useState('');
-  const [storeFilter, setStoreFilter] = useState(null);
   const [tagFilter, setTagFilter] = useState(null);
 
   const filtered = SYNC_DATA.filter((m) => {
     if (deviceName && !m.name.toLowerCase().includes(deviceName.toLowerCase())) return false;
-    if (storeFilter && m.store !== storeFilter) return false;
     if (tagFilter && !m.tags.includes(tagFilter)) return false;
     return true;
   });
@@ -297,9 +289,9 @@ function SyncHistoryTab({ t }) {
       render: (n) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ width: 28, height: 28, borderRadius: 6, background: '#e0e7ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <AudioOutlined style={{ fontSize: 13, color: C.primary }} />
+            <AudioOutlined style={{ fontSize: 15, color: C.primary }} />
           </span>
-          <span style={{ fontWeight: 600, fontSize: 13, color: C.text }}>{n}</span>
+          <span style={{ fontWeight: 600, fontSize: 15, color: C.text }}>{n}</span>
         </div>
       ),
     },
@@ -318,9 +310,9 @@ function SyncHistoryTab({ t }) {
         if (!row.noteDate) return <span style={{ color: C.textLight }}>—</span>;
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <span style={{ fontSize: 11, color: C.textLight }}>{row.noteDate} · {row.noteAuthor}</span>
-            {row.noteBody && <span style={{ fontSize: 12, color: C.text }}>{row.noteBody}</span>}
-            {row.noteBody && <span style={{ fontSize: 12, color: C.primary, cursor: 'pointer', fontWeight: 500 }}>Show More</span>}
+            <span style={{ fontSize: 13, color: C.textLight }}>{row.noteDate} · {row.noteAuthor}</span>
+            {row.noteBody && <span style={{ fontSize: 14, color: C.text }}>{row.noteBody}</span>}
+            {row.noteBody && <span style={{ fontSize: 14, color: C.primary, cursor: 'pointer', fontWeight: 500 }}>Show More</span>}
           </div>
         );
       },
@@ -330,7 +322,7 @@ function SyncHistoryTab({ t }) {
       key: 'status',
       render: (_, row) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 11, color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>Audio</span>
+          <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>Audio</span>
           <div style={{ display: 'flex', gap: 3 }}>
             {row.days.map((active, i) => (
               <span key={i} style={{ width: 14, height: 14, borderRadius: 3, background: active ? C.green : '#e2e8f0', display: 'inline-block' }} />
@@ -352,22 +344,18 @@ function SyncHistoryTab({ t }) {
       {/* filter bar */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, alignItems: 'flex-end', flexWrap: 'wrap', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: 8, padding: 14 }}>
         <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Device Name</div>
+          <div style={{ fontSize: 13, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Device Name</div>
           <Input placeholder="Device Name" value={deviceName} onChange={(e) => setDeviceName(e.target.value)} style={{ width: 160 }} />
         </div>
         <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Store</div>
-          <Select allowClear placeholder="Select Store" value={storeFilter} onChange={setStoreFilter} style={{ width: 160 }} options={STORE_LIST.map((s) => ({ value: s.name, label: s.name }))} />
-        </div>
-        <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Tags</div>
+          <div style={{ fontSize: 13, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Tags</div>
           <Select allowClear placeholder="Select tag" value={tagFilter} onChange={setTagFilter} style={{ width: 140 }} options={[
             { value: 'enable', label: 'enable' },
             { value: 'utraview', label: 'utraview' },
           ]} />
         </div>
         <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Date</div>
+          <div style={{ fontSize: 13, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Date</div>
           <RangePicker size="middle" style={{ width: 240 }} />
         </div>
         <SearchButton />
@@ -391,11 +379,7 @@ const STORE_MIC_DATA = STORE_LIST.map((s) => {
 });
 
 function ActiveByStoreTab({ t }) {
-  const [storeFilter, setStoreFilter] = useState(null);
-
-  const filtered = storeFilter
-    ? STORE_MIC_DATA.filter((s) => s.address === storeFilter)
-    : STORE_MIC_DATA;
+  const filtered = STORE_MIC_DATA;
 
   const columns = [
     {
@@ -427,11 +411,7 @@ function ActiveByStoreTab({ t }) {
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, alignItems: 'flex-end', flexWrap: 'wrap', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: 8, padding: 14 }}>
         <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Store</div>
-          <Select allowClear placeholder="Select store" value={storeFilter} onChange={setStoreFilter} style={{ width: 180 }} options={STORE_LIST.map((s) => ({ value: s.name, label: s.name }))} />
-        </div>
-        <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Date Range</div>
+          <div style={{ fontSize: 13, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Date Range</div>
           <RangePicker size="middle" style={{ width: 240 }} />
         </div>
         <SearchButton />
@@ -493,7 +473,7 @@ function ActiveDaysCalendar({ monthDays }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
         <div>
           <div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>March</div>
-          <div style={{ fontSize: 13, color: C.primary }}>2026</div>
+          <div style={{ fontSize: 15, color: C.primary }}>2026</div>
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
           <span style={{ cursor: 'pointer', color: C.textMuted, fontSize: 14 }}>‹</span>
@@ -504,7 +484,7 @@ function ActiveDaysCalendar({ monthDays }) {
       {/* day labels */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, textAlign: 'center', marginBottom: 4 }}>
         {dayLabels.map((d, i) => (
-          <span key={i} style={{ fontSize: 11, fontWeight: 600, color: C.textMuted, padding: '4px 0' }}>{d}</span>
+          <span key={i} style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, padding: '4px 0' }}>{d}</span>
         ))}
       </div>
 
@@ -523,7 +503,7 @@ function ActiveDaysCalendar({ monthDays }) {
                   background: active ? C.primary : 'transparent',
                   color: active ? '#fff' : isToday ? C.text : C.textLight,
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 12, fontWeight: active ? 600 : 400,
+                  fontSize: 14, fontWeight: active ? 600 : 400,
                   margin: '0 auto',
                 }}
               >
@@ -541,20 +521,18 @@ function ActiveDaysCalendar({ monthDays }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: C.primary, display: 'inline-block' }} />
-          <span style={{ fontSize: 12, color: C.textMuted }}>Active Day</span>
+          <span style={{ fontSize: 14, color: C.textMuted }}>Active Day</span>
         </div>
-        <span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{activeDayCount} active days</span>
+        <span style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{activeDayCount} active days</span>
       </div>
     </div>
   );
 }
 
 function MicHistoryTab({ t }) {
-  const [storeFilter, setStoreFilter] = useState(null);
   const [deviceFilter, setDeviceFilter] = useState(null);
 
   const filtered = MIC_HISTORY.filter((m) => {
-    if (storeFilter && m.storeAddress !== storeFilter) return false;
     if (deviceFilter && m.deviceName !== deviceFilter) return false;
     return true;
   });
@@ -572,7 +550,7 @@ function MicHistoryTab({ t }) {
       title: <span style={{ color: C.primary, fontWeight: 700 }}>Store Id</span>,
       dataIndex: 'storeId',
       key: 'storeId',
-      render: (id) => <code style={{ fontSize: 12, color: C.textMuted }}>{id}</code>,
+      render: (id) => <code style={{ fontSize: 14, color: C.textMuted }}>{id}</code>,
     },
     {
       title: <span style={{ color: C.primary, fontWeight: 700 }}>Store Address</span>,
@@ -583,7 +561,7 @@ function MicHistoryTab({ t }) {
       title: <span style={{ color: C.primary, fontWeight: 700 }}>Device Creation Date</span>,
       dataIndex: 'createdDate',
       key: 'createdDate',
-      render: (d) => <span style={{ fontSize: 12, color: C.textMuted }}>{d}</span>,
+      render: (d) => <span style={{ fontSize: 14, color: C.textMuted }}>{d}</span>,
     },
     {
       title: <span style={{ color: C.primary, fontWeight: 700 }}>Active Days</span>,
@@ -594,7 +572,7 @@ function MicHistoryTab({ t }) {
           trigger="click"
           placement="left"
         >
-          <div style={{ display: 'flex', gap: 4, cursor: 'pointer' }}>
+          <div style={{ display: 'flex', gap: 6, cursor: 'pointer' }}>
             {ACTIVE_DAYS_RANGE.map((day, i) => {
               const active = row.activeDays[i];
               return (
@@ -605,7 +583,7 @@ function MicHistoryTab({ t }) {
                     background: active ? C.primary : '#e2e8f0',
                     color: active ? '#fff' : C.textLight,
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 10, fontWeight: 600,
+                    fontSize: 12, fontWeight: 600,
                   }}
                 >
                   {day}
@@ -627,11 +605,7 @@ function MicHistoryTab({ t }) {
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, alignItems: 'flex-end', flexWrap: 'wrap', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: 8, padding: 14 }}>
         <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Store</div>
-          <Select allowClear placeholder="Filter by store" value={storeFilter} onChange={setStoreFilter} style={{ width: 180 }} options={STORE_LIST.map((s) => ({ value: s.name, label: s.name }))} />
-        </div>
-        <div>
-          <div style={{ fontSize: 11, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Device</div>
+          <div style={{ fontSize: 13, color: C.primary, fontWeight: 600, marginBottom: 4 }}>Device</div>
           <Select allowClear showSearch placeholder="Filter by device name" value={deviceFilter} onChange={setDeviceFilter} style={{ width: 200 }} options={deviceOptions} />
         </div>
         <SearchButton />

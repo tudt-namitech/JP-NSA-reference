@@ -16,6 +16,7 @@ import {
   MailOutlined,
   AppstoreOutlined,
   ClockCircleOutlined,
+  SyncOutlined,
 } from '@ant-design/icons';
 import { useApp } from '../contexts/AppContext';
 
@@ -75,8 +76,9 @@ export default function AlertPanel({ open, onClose }) {
     });
 
   /* ── Severity icon badge ── */
-  function SevBadge({ sev, ico }) {
+  function SevBadge({ sev, type }) {
     const cfg = SEV_CFG[sev] ?? SEV_CFG.p3;
+    const Icon = type === 'sync' ? SyncOutlined : AudioOutlined;
     return (
       <div
         style={{
@@ -87,11 +89,10 @@ export default function AlertPanel({ open, onClose }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 16,
           flexShrink: 0,
         }}
       >
-        {ico}
+        <Icon style={{ fontSize: 16, color: cfg.color }} />
       </div>
     );
   }
@@ -107,7 +108,7 @@ export default function AlertPanel({ open, onClose }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 6,
+            gap: 8,
             padding: '0 0 12px',
             flexWrap: 'wrap',
           }}
@@ -127,11 +128,11 @@ export default function AlertPanel({ open, onClose }) {
                 background: filter === key ? '#eff6ff' : '#fff',
                 color: filter === key ? '#2563eb' : '#475569',
                 cursor: 'pointer',
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: filter === key ? 600 : 400,
                 display: 'flex',
                 alignItems: 'center',
-                gap: 4,
+                gap: 6,
                 transition: 'all 0.15s',
               }}
             >
@@ -147,7 +148,7 @@ export default function AlertPanel({ open, onClose }) {
                     borderRadius: 8,
                     background: '#2563eb',
                     color: '#fff',
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: 700,
                     padding: '0 4px',
                   }}
@@ -164,7 +165,7 @@ export default function AlertPanel({ open, onClose }) {
             size="small"
             type="link"
             onClick={markAllRead}
-            style={{ fontSize: 12, color: '#2563eb', padding: 0 }}
+            style={{ fontSize: 14, color: '#2563eb', padding: 0 }}
           >
             {t('ap_mark_all')}
           </Button>
@@ -216,7 +217,7 @@ export default function AlertPanel({ open, onClose }) {
                   }}
                 >
                   {/* severity icon */}
-                  <SevBadge sev={alert.sev} ico={alert.ico} />
+                  <SevBadge sev={alert.sev} type={alert.type} />
 
                   {/* content */}
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -224,14 +225,14 @@ export default function AlertPanel({ open, onClose }) {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 6,
+                        gap: 8,
                         marginBottom: 2,
                       }}
                     >
                       <Text
                         strong={!read}
                         style={{
-                          fontSize: 13,
+                          fontSize: 15,
                           color: '#0f172a',
                           flex: 1,
                           whiteSpace: 'nowrap',
@@ -255,7 +256,7 @@ export default function AlertPanel({ open, onClose }) {
                       />
                     </div>
 
-                    <Text style={{ fontSize: 11, color: '#64748b', display: 'block', marginBottom: 6 }}>
+                    <Text style={{ fontSize: 13, color: '#64748b', display: 'block', marginBottom: 6 }}>
                       {alert.store}
                     </Text>
 
@@ -266,14 +267,14 @@ export default function AlertPanel({ open, onClose }) {
                         type="primary"
                         ghost
                         onClick={() => markRead(alert._idx)}
-                        style={{ fontSize: 11, height: 22, padding: '0 8px', borderRadius: 4 }}
+                        style={{ fontSize: 13, height: 22, padding: '0 8px', borderRadius: 4 }}
                       >
                         {t('ap_view')}
                       </Button>
                       <Button
                         size="small"
                         onClick={() => dismiss(alert._idx)}
-                        style={{ fontSize: 11, height: 22, padding: '0 8px', borderRadius: 4 }}
+                        style={{ fontSize: 13, height: 22, padding: '0 8px', borderRadius: 4 }}
                       >
                         {t('ap_dismiss')}
                       </Button>
@@ -286,11 +287,11 @@ export default function AlertPanel({ open, onClose }) {
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'flex-end',
-                      gap: 6,
+                      gap: 8,
                       flexShrink: 0,
                     }}
                   >
-                    <Text style={{ fontSize: 11, color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                    <Text style={{ fontSize: 13, color: '#94a3b8', whiteSpace: 'nowrap' }}>
                       {alert.time}
                     </Text>
                     {!read && (
@@ -409,7 +410,7 @@ export default function AlertPanel({ open, onClose }) {
                   border: '1px solid #e2e8f0',
                   borderRadius: 6,
                   padding: '3px 7px',
-                  fontSize: 12,
+                  fontSize: 14,
                   color: '#0f172a',
                   background: '#fff',
                   cursor: 'pointer',
@@ -424,7 +425,7 @@ export default function AlertPanel({ open, onClose }) {
                   border: '1px solid #e2e8f0',
                   borderRadius: 6,
                   padding: '3px 7px',
-                  fontSize: 12,
+                  fontSize: 14,
                   color: '#0f172a',
                   background: '#fff',
                   cursor: 'pointer',
@@ -447,7 +448,7 @@ export default function AlertPanel({ open, onClose }) {
     return (
       <div
         style={{
-          fontSize: 11,
+          fontSize: 13,
           fontWeight: 700,
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
@@ -474,7 +475,7 @@ export default function AlertPanel({ open, onClose }) {
           marginBottom: 6,
         }}
       >
-        <Text style={{ fontSize: 13, color: '#334155' }}>{label}</Text>
+        <Text style={{ fontSize: 15, color: '#334155' }}>{label}</Text>
         <Switch size="small" checked={checked} onChange={onChange} />
       </div>
     );
@@ -489,7 +490,7 @@ export default function AlertPanel({ open, onClose }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 6,
+          gap: 8,
           padding: '12px 8px',
           borderRadius: 10,
           border: `1.5px solid ${checked ? '#2563eb' : '#e2e8f0'}`,
@@ -499,7 +500,7 @@ export default function AlertPanel({ open, onClose }) {
         }}
       >
         <span style={{ fontSize: 20, color: checked ? '#2563eb' : '#94a3b8' }}>{icon}</span>
-        <Text style={{ fontSize: 12, color: checked ? '#2563eb' : '#64748b', fontWeight: checked ? 600 : 400 }}>
+        <Text style={{ fontSize: 14, color: checked ? '#2563eb' : '#64748b', fontWeight: checked ? 600 : 400 }}>
           {label}
         </Text>
         <Switch size="small" checked={checked} onChange={onChange} onClick={(e) => e.stopPropagation()} />
@@ -538,7 +539,7 @@ export default function AlertPanel({ open, onClose }) {
         </Text>
       }
       closeIcon={
-        <CloseOutlined style={{ fontSize: 13, color: '#64748b' }} />
+        <CloseOutlined style={{ fontSize: 15, color: '#64748b' }} />
       }
       destroyOnClose={false}
     >
