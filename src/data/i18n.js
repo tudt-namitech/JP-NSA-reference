@@ -169,7 +169,7 @@ export const I = {
     desc_mic: 'Overseeing the deployment and real-time connectivity status of the microphone network across all locations.',
     desc_cctv: 'Managing the integration and configuration of high-definition IP camera systems and NVR software.',
     desc_users: 'Administering user accounts and defining granular access permissions.',
-    desc_audio: 'A phonetic guide that helps the system accurately recognize word pronunciations.',
+    desc_audio: 'A guide that helps the system accurately recognize word pronunciations.',
     tb_sub_rec: "Today's recordings",
     btn_export: '↑ Export',
     pin_lbl: 'Pin sidebar',
